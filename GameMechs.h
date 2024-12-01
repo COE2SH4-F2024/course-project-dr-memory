@@ -6,6 +6,7 @@
 
 #include "objPos.h"
 #include "objPosArrayList.h"
+#include "Food.h"
 
 using namespace std;
 
@@ -16,11 +17,12 @@ class GameMechs
         bool exitFlag;
         bool loseFlag;
         int score;
+        int speed;
+        int delay;
 
         int boardSizeX;
         int boardSizeY;
 
-        objPos food;
 
     public:
         GameMechs();
@@ -40,9 +42,14 @@ class GameMechs
         int getBoardSizeY() const;
         
         int getScore() const;
-        void incrementScore();
+        void incrementScore(int input);
         
         // More methods should be added here
+        void collectAsyncInput();
+        int getSpeed() const;
+        int getDelay() const;
+        void setSpeed(int newSpeed);
+        void setDelay(int newDelay);
 };
 
 #endif

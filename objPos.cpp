@@ -21,6 +21,39 @@ objPos::objPos(int xPos, int yPos, char sym)
 
 
 
+//Destructor
+objPos::~objPos()
+{
+    delete pos;
+}
+
+//Copy Constructor
+objPos::objPos(const objPos &other)
+{
+    pos = new Pos;
+    pos->x = other.pos->x;
+    pos->y = other.pos->y;
+    symbol = other.symbol;
+}
+
+//copy assignment
+objPos &objPos::operator=(const objPos &other)
+{
+    if(this != &other)
+    {
+        //clean up
+        delete pos;
+
+        //memory allocation and copy data
+        pos = new Pos;
+        pos->x = other.pos->x;
+        pos->y = other.pos->y;
+        symbol = other.symbol;
+    }
+    return *this;
+}
+
+
 
 void objPos::setObjPos(objPos o)
 {
