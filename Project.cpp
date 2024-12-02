@@ -94,9 +94,9 @@ void DrawScreen(void)
     
     
     //Board Drawing
-    for(y=0; y < 15;y++) 
+    for(y=0; y <Board_Height;y++) 
     {
-        for(x=0; x < 30;x++) 
+        for(x=0; x < Board_Length;x++) 
         {
             // Draw the game border
             if(x == 0 || x == (Board_Length - 1) || y == 0 || y == (Board_Height - 1))
@@ -151,6 +151,7 @@ void DrawScreen(void)
     MacUILib_printf("Score: %d\n", myGM -> getScore());
     MacUILib_printf("Current Speed Level: %d\n", myGM -> getSpeed());
     MacUILib_printf("Instructions: Press '=' to increase speed, '-' to decrease speed.\n");
+    MacUILib_printf("Special Item: 'A' increases size by 5 and score by 45\nSpecial Item: 'M' increases score by 15");
 }
 void LoopDelay(void)
 {
@@ -165,19 +166,14 @@ void CleanUp(void)
     //Player Lost
     if(myGM -> getLoseFlagStatus())
     {
-        MacUILib_printf("You hit yourself.\nYou Lost!");
+        MacUILib_printf("You hit yourself.\nYou Lost!\nYour score was %d", myGM -> getScore());
     } 
 
-    //Player Won
-    else if (myGM -> getScore() >= 5)
-    {
-        MacUILib_printf("CONGRATULATIONS YOU WON!! Your achieved a score of %d", myGM->getScore());
-    } 
 
     //Game Ended Early
     else if(myGM -> getExitFlagStatus())
     {
-        MacUILib_printf("The game ended early.\nYou scored %d that round", myGM -> getScore());
+        MacUILib_printf("The game ended early.\nYou scored %d points that round", myGM -> getScore());
     }
 
     // Deallocate heap memory for game objects

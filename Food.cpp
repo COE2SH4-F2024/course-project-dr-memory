@@ -64,7 +64,7 @@ void Food::generateFood(const objPosArrayList *blockOff, int foodSpecial)
                 case 1:
                 case 2:
                 case 3:
-                    foodSymbol = 'N';
+                    foodSymbol = 'O';
                     break;
                 case 4:
                     foodSymbol = 'M';
