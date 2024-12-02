@@ -3,24 +3,24 @@
 
 
 Player::Player(GameMechs* thisGMRef, Food *foodRef)
-{
+{   
+    // Initializes references to GameMechs and Food
     mainGameMechsRef = thisGMRef;
-    myDir = STOP;
+    myDir = STOP; //sets deafult direction
     food = foodRef;
 
-    // more actions to be included
+    
     int BoardSizeX = mainGameMechsRef -> getBoardSizeX(); 
-    int BoardSizeY = mainGameMechsRef -> getBoardSizeY(); //ADD IT
+    int BoardSizeY = mainGameMechsRef -> getBoardSizeY(); 
     
     playerPosList = new objPosArrayList();
-    playerPosList -> insertHead(objPos(BoardSizeX/2, BoardSizeY/2, '*')); //Adds snake to the middle of the board
+    playerPosList -> insertHead(objPos(BoardSizeX/2, BoardSizeY/2, '*')); // Place snake's head in the center of the board
 }
 
 
 Player::~Player()
 {
     // delete any heap members here
-    //No keyword 'new' means that destructor can be empty for now
     delete playerPosList;
 }
 
@@ -30,6 +30,7 @@ objPosArrayList *Player::getPlayerPosList() const
     return playerPosList;
 }
 
+// Updates the direction of the player based on input
 void Player::updatePlayerDir()
 {
         // PPA3 input processing logic  
@@ -44,7 +45,7 @@ void Player::updatePlayerDir()
                     break;
 
                 case 'W':
-                case 'w': //move up
+                case 'w': //Move up
                     if(myDir == LEFT || myDir == RIGHT || myDir == STOP)
                     {
                         myDir = UP;
@@ -68,7 +69,7 @@ void Player::updatePlayerDir()
                     break;
             
                 case 'D':
-                case 'd':
+                case 'd'://Move right
                     if(myDir == UP || myDir == DOWN || myDir == STOP)
                     {
                         myDir = RIGHT;
@@ -86,8 +87,9 @@ void Player::movePlayer()
 {
     // PPA3 Finite State Machine logic
 
-    objPos NewHead = playerPosList -> getHeadElement();
+    objPos NewHead = playerPosList -> getHeadElement(); //current head position
     
+    // Update the head position based on direction
     switch(myDir)
     {
         case STOP:
@@ -97,7 +99,7 @@ void Player::movePlayer()
             NewHead.pos -> x = NewHead.pos -> x + 1;
             if(NewHead.pos -> x == mainGameMechsRef -> getBoardSizeX() - 1)
             {
-                NewHead.pos -> x = 1;
+                NewHead.pos -> x = 1;// Wrap around
             }
             break;
 
@@ -105,7 +107,7 @@ void Player::movePlayer()
             NewHead.pos -> x = NewHead.pos -> x - 1;
             if(NewHead.pos -> x ==0)
             {
-                NewHead.pos -> x = mainGameMechsRef -> getBoardSizeX() - 2;
+                NewHead.pos -> x = mainGameMechsRef -> getBoardSizeX() - 2;// Wrap around
             }
             break;
 
@@ -113,7 +115,7 @@ void Player::movePlayer()
             NewHead.pos -> y = NewHead.pos -> y - 1;
             if(NewHead.pos -> y == 0)
             {
-                NewHead.pos -> y = mainGameMechsRef -> getBoardSizeY() - 2;
+                NewHead.pos -> y = mainGameMechsRef -> getBoardSizeY() - 2;// Wrap around
             }
             break;
 
@@ -121,21 +123,22 @@ void Player::movePlayer()
             NewHead.pos -> y = NewHead.pos -> y + 1;
             if(NewHead.pos -> y==mainGameMechsRef -> getBoardSizeY() - 1)
             {
-                NewHead.pos -> y = 1;
+                NewHead.pos -> y = 1;// Wrap around
             }
             break;
         
         default:
             break;
     }
+
     //Movement and Collision handling
     foodEating(NewHead);
     selfCollisionCheck(NewHead);
     myPlayerMovement(NewHead);
 }
 
-// More methods to be added
 
+// Updates the player's speed based on input
 void Player::updatePlayerSpeed()
 {
     //Speed Input
@@ -204,6 +207,7 @@ void Player::updatePlayerSpeedDelay()
     mainGameMechsRef -> setDelay(delay);
 }
 
+// Checks if the player has eaten food and handles score and new food generation
 void Player::foodEating(const objPos &NewHead)
 {
     int i;
@@ -231,7 +235,7 @@ void Player::foodEating(const objPos &NewHead)
                     playerPosList -> insertTails(5);
                 }
 
-                //normal food
+                //Normal food
                 else
                 {
                     mainGameMechsRef -> incrementScore(1);
@@ -288,7 +292,7 @@ void Player::selfCollisionCheck(const objPos &NewHead)
     {
         objPos bodyPart = playerPosList -> getElement(i);
 
-        if(NewHead.pos -> x == bodyPart.pos -> x && NewHead.pos -> y == bodyPart.pos -> y)
+        if(NewHead.pos -> x == bodyPart.pos -> x && NewHead.pos -> y == bodyPart.pos -> y)//checks for each body part
         {
             mainGameMechsRef -> setLoseFlag();
             mainGameMechsRef -> setExitTrue();

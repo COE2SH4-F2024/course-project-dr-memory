@@ -7,6 +7,7 @@
 
 using namespace std;
 
+// Constants for game board dimensions and time delay
 #define DELAY_CONST 100000
 #define Board_Length 30
 #define Board_Height 15
@@ -21,7 +22,8 @@ void DrawScreen(void);
 void LoopDelay(void);
 void CleanUp(void);
 
-Player *myPlayer; //Global pointer meant to instantiate a player object on the heap
+// Global pointers for game mechanics, player, and food objects
+Player *myPlayer; 
 GameMechs *myGM;
 Food *food;
 
@@ -53,12 +55,14 @@ void Initialize(void)
     food = new Food();
     myPlayer = new Player(myGM, food);
 
+
+    // Generate initial food items on the board
     for(int i = 1; i <= 5; i++)
     {
-        food -> generateFood(myPlayer -> getPlayerPosList(), i);
+        food -> generateFood(myPlayer -> getPlayerPosList(), i); 
     }
 
-    exitFlag = false; //SEE IF I SHOULD KEEP
+    exitFlag = false; 
 }
 
 void GetInput(void)
@@ -70,29 +74,31 @@ void GetInput(void)
 }
 
 void RunLogic(void)
-{
+{   
+    // Update player state based on input and game mechanics
     myPlayer -> updatePlayerDir();
     myPlayer -> updatePlayerSpeed();
     myPlayer -> updatePlayerSpeedDelay();
     myPlayer -> movePlayer();
-    myGM -> clearInput();
+    myGM -> clearInput(); // Clear input for the next cycle
 }
 
 void DrawScreen(void)
 {
 
     MacUILib_clearScreen();
+
     int x;
     int y;
     int i;
     
-    //objPos playerPos = myPlayer->getPlayerPos();
+    
     //Board Drawing
-    for(y=0; y < 15;y++) //For iterating through the rows
+    for(y=0; y < 15;y++) 
     {
-        for(x=0; x < 30;x++) //For iterating through the columns
+        for(x=0; x < 30;x++) 
         {
-            //If on border
+            // Draw the game border
             if(x == 0 || x == (Board_Length - 1) || y == 0 || y == (Board_Height - 1))
             {
                 MacUILib_printf("#");
@@ -103,6 +109,7 @@ void DrawScreen(void)
             bool myPlayerPresent = false;
             bool foodPresent = false;
 
+            // Check if any part of the player is at the current position
             for(i = 0; i < myPlayer -> getPlayerPosList() -> getSize(); i++)
             {
                 objPos myPlayerTorso = myPlayer -> getPlayerPosList() -> getElement(i);
@@ -114,7 +121,8 @@ void DrawScreen(void)
                     break;
                 }
             }
-            //Check if food is present at coordinate, if player character is not there
+
+            // Check if food is at the current position (only if player isn't there)
             if(!myPlayerPresent)
             {
                 for(i=0; i < food -> getFoodPos() -> getSize(); i++)
@@ -130,7 +138,7 @@ void DrawScreen(void)
                 }
             }
 
-            //if both food and myPlayer character are no present, add empty space
+            //if both food and myPlayer character are not present, add empty space
             if(!myPlayerPresent && !foodPresent)
             {
                 MacUILib_printf(" ");
@@ -139,6 +147,7 @@ void DrawScreen(void)
         MacUILib_printf("\n");
     }
 
+    // Display score, speed level, and game instructions
     MacUILib_printf("Score: %d\n", myGM -> getScore());
     MacUILib_printf("Current Speed Level: %d\n", myGM -> getSpeed());
     MacUILib_printf("Instructions: Press '=' to increase speed, '-' to decrease speed.\n");
@@ -153,7 +162,7 @@ void CleanUp(void)
 {
     MacUILib_clearScreen();  
 
-        //Player Lost
+    //Player Lost
     if(myGM -> getLoseFlagStatus())
     {
         MacUILib_printf("You hit yourself.\nYou Lost!");
@@ -171,6 +180,7 @@ void CleanUp(void)
         MacUILib_printf("The game ended early.\nYou scored %d that round", myGM -> getScore());
     }
 
+    // Deallocate heap memory for game objects
     delete myPlayer;
     delete myGM;
     delete food;

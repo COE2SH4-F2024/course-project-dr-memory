@@ -9,7 +9,7 @@ class objPosArrayList
 {
     private:
         objPos* aList;
-        int listSize;
+        int listSize; 
         int arrayCapacity;
 
     public:

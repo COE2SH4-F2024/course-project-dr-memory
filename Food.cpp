@@ -1,24 +1,26 @@
 #include "Food.h"
 
-Food::Food()
+Food::Food() //constructor 
 {
     foodStorage = new objPosArrayList();
 }
 
-Food::~Food()
+Food::~Food() //destructor
 {
-    delete foodStorage;
+    delete foodStorage; 
 }
 
+// Generates food at a valid position on the board while avoiding blockOff areas.
 void Food::generateFood(const objPosArrayList *blockOff, int foodSpecial)
 {
-    int randomX, randomY, i;
-    bool validPos = false;
+    int randomX, randomY, i; //randomX/randomY hold random x-y values to print Food items
+    bool validPos = false;   // Flag to check if the generated position is valid.
     char foodSymbol;
-    bool occupied[Board_Length][Board_Height];
+    bool occupied[Board_Length][Board_Height]; // Tracks occupied positions on the board.
 
     srand(time(NULL));
 
+    // Loop until a valid food position is generated.
     while(!validPos)
     {
         validPos = true;
@@ -31,6 +33,7 @@ void Food::generateFood(const objPosArrayList *blockOff, int foodSpecial)
             }
         }
 
+        // Mark all blockOff positions as occupied.
         for(i = 0; i < blockOff -> getSize(); i++)
         {
             objPos player = blockOff -> getElement(i);
@@ -44,6 +47,7 @@ void Food::generateFood(const objPosArrayList *blockOff, int foodSpecial)
             occupied[food.pos -> x][food.pos -> y] = 1;
         }
 
+        // Generate a random position within the board boundaries
         randomX = (rand() % (Board_Length - 2)) + 1;
         randomY = (rand() % (Board_Height - 2)) + 1;
 
@@ -54,6 +58,7 @@ void Food::generateFood(const objPosArrayList *blockOff, int foodSpecial)
 
         else
         {
+            // Assign a symbol to the food based on the foodSpecial value.
             switch(foodSpecial)
             {
                 case 1:
@@ -69,12 +74,14 @@ void Food::generateFood(const objPosArrayList *blockOff, int foodSpecial)
                     break;
             }
             objPos foodPos = objPos(randomX, randomY, foodSymbol);
+
+            // Add the new food position to the head of the foodStorage list.
             foodStorage -> insertHead(foodPos);
         }
     }
 }
 
-objPosArrayList* Food::getFoodPos() const
+objPosArrayList* Food::getFoodPos() const // Returns the pointer to the foodStorage list.
 {
     return foodStorage;
 }

@@ -1,6 +1,6 @@
 #include "objPos.h"
 
-objPos::objPos()
+objPos::objPos() //Constructor
 {
     pos = new Pos;
     pos->x = 0;
@@ -8,17 +8,13 @@ objPos::objPos()
     symbol = 0; //NULL
 }
 
-objPos::objPos(int xPos, int yPos, char sym)
+objPos::objPos(int xPos, int yPos, char sym) //sets positions at specific points with a specific symbol
 {
     pos = new Pos;
     pos->x = xPos;
     pos->y = yPos;
     symbol = sym;
 }
-
-// Respect the rule of six / minimum four
-// [TODO] Implement the missing special member functions to meet the minimum four rule
-
 
 
 //Destructor
@@ -28,7 +24,7 @@ objPos::~objPos()
 }
 
 //Copy Constructor
-objPos::objPos(const objPos &other)
+objPos::objPos(const objPos &other) 
 {
     pos = new Pos;
     pos->x = other.pos->x;
@@ -36,7 +32,7 @@ objPos::objPos(const objPos &other)
     symbol = other.symbol;
 }
 
-//copy assignment
+//Copy assignment
 objPos &objPos::operator=(const objPos &other)
 {
     if(this != &other)
@@ -55,21 +51,21 @@ objPos &objPos::operator=(const objPos &other)
 
 
 
-void objPos::setObjPos(objPos o)
+void objPos::setObjPos(objPos o) // Sets the position and symbol to match another objPos object.
 {
     pos->x = o.pos->x;
     pos->y = o.pos->y;
     symbol = o.symbol;
 }
 
-void objPos::setObjPos(int xPos, int yPos, char sym)
+void objPos::setObjPos(int xPos, int yPos, char sym) // Sets the position and symbol using individual parameters.
 {
     pos->x = xPos;
     pos->y = yPos;
     symbol = sym;
 }
 
-objPos objPos::getObjPos() const
+objPos objPos::getObjPos() const // Returns a new objPos object with the same position and symbol as the current object.
 {
     objPos returnPos;
     returnPos.pos->x = pos->x;
@@ -79,17 +75,18 @@ objPos objPos::getObjPos() const
     return returnPos;
 }
 
-char objPos::getSymbol() const
+
+char objPos::getSymbol() const // Returns the symbol of the current object.
 {
     return symbol;
 }
 
-bool objPos::isPosEqual(const objPos* refPos) const
+bool objPos::isPosEqual(const objPos* refPos) const // Checks if the position of the current object matches the position of a reference objPos object.
 {
     return (refPos->pos->x == pos->x && refPos->pos->y == pos->y);
 }
 
-char objPos::getSymbolIfPosEqual(const objPos* refPos) const
+char objPos::getSymbolIfPosEqual(const objPos* refPos) const // Returns the symbol of the current object if its position matches the position of a reference objPos object.
 {
     if(isPosEqual(refPos))
         return symbol;

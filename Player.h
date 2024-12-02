@@ -8,13 +8,7 @@
 
 class Player
 {
-    // Construct the remaining declaration from the project manual.
 
-    // Only some sample members are included here
-
-    // You will include more data members and member functions to complete your design.
-
-    
     public:
         enum Dir {UP, DOWN, LEFT, RIGHT, STOP};  // This is the direction state
 
@@ -26,7 +20,7 @@ class Player
         void updatePlayerDir();
         void movePlayer();
 
-        // More methods to be added here
+        
         void updatePlayerSpeed();
         void updatePlayerSpeedDelay();
         void foodEating(const objPos &NewHead);
@@ -34,7 +28,7 @@ class Player
         void myPlayerMovement(const objPos &NewHead);
 
     private:
-        objPosArrayList* playerPosList; // Upgrade this in iteration 3.       
+        objPosArrayList* playerPosList;       
         enum Dir myDir;
 
         // Need a reference to the Main Game Mechanisms
