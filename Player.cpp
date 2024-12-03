@@ -265,7 +265,7 @@ void Player::foodEating(const objPos &NewHead)
     }
 }
 
-//Regular Movement
+//Regular Movement 
 void Player::myPlayerMovement(const objPos &NewHead)
 {
     int i;
